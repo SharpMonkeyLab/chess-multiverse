@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manu's Board Editor</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="viewport-frame">
+    <div class="app game-stage" id="gameStage">
+      <img id="stageBackgroundImage" class="stage-background-image" alt="" />
+
+      <div class="stage-content">
+        <aside class="sidebar">
+          <h1 class="sidebar-sticky-title">
+            <span>TOOLS</span>
+
+            <button id="shortcutHelpBtn" class="shortcut-help-btn" type="button" title="Show keyboard shortcuts">
+              ?
+            </button>
+          </h1>
+
+          <div id="shortcutHelpPanel" class="shortcut-help-panel"></div>
+
+          <p class="muted sidebar-description">
+            Shape the battlefield with terrains, use counters and affect pieces with conditions.
+          </p>
+
+          <section class="panel-section play-palette-box terrain-tools-section">
+            <h2>Terrains</h2>
+
+            <div id="tileButtonGrid" class="compact-palette"></div>
+
+            <div class="button-row two-cols top-gap">
+              <button id="fillBoardTileBtn">Apply to Whole Board</button>
+              <button id="clearBoardTilesBtn">Clear Board Terrains</button>
+            </div>
+
+            <button id="clearTileBtn" class="top-gap">Clear Tile Terrain</button>
+          </section>
+
+          <section class="panel-section play-palette-box">
+            <h2>Counters</h2>
+
+            <div id="counterButtonGrid" class="compact-palette top-gap"></div>
+
+            <button id="clearCounterBtn" class="top-gap">Clear Counter on Tile</button>
+          </section>
+
+          <section class="panel-section play-palette-box">
+            <h2>Conditions</h2>
+
+            <div id="conditionButtonGrid" class="compact-palette"></div>
+
+            <button id="clearConditionBtn" class="top-gap">Clear Conditions on Tile</button>
+          </section>
+
+          <section class="panel-section theme-editor-box">
+            <details open>
+              <summary class="theme-editor-main-summary">World Editor</summary>
+
+              <details open>
+                <summary>World Details</summary>
+
+                <div class="theme-upload-card world-details-card">
+                  <label for="worldNameInput">World Name</label>
+                  <input id="worldNameInput" type="text" placeholder="e.g. Elemental Chess" />
+
+                  <label for="worldDescriptionInput">World Description</label>
+                  <textarea id="worldDescriptionInput" maxlength="120"
+                    placeholder="Briefly describe the theme, style, or idea of this world."></textarea>
+
+                  <div id="worldDescriptionCount" class="character-count">
+                    0 / 120
+                  </div>
+
+                  <label for="worldRulesInput">Rules Summary / Creator Notes</label>
+                  <textarea id="worldRulesInput"
+                    placeholder="Write the main custom rules, reminders, or design notes for this world."></textarea>
+                </div>
+              </details>
+
+              <details>
+                <summary>Terrain Editor</summary>
+
+                <p class="muted small">
+                  Edit the terrain options available during the game.
+                </p>
+
+                <div id="terrainEditorList" class="theme-editor-list"></div>
+
+                <button id="addTerrainBtn" class="top-gap">Add Terrain</button>
+              </details>
+
+              <details>
+                <summary>Counter Editor</summary>
+
+                <p class="muted small">
+                  Edit the counters options available during the game.
+                </p>
+
+                <div id="counterEditorList" class="theme-editor-list"></div>
+
+                <button id="addCounterBtn" class="top-gap">Add Counter</button>
+              </details>
+
+              <details>
+                <summary>Condition Editor</summary>
+
+                <p class="muted small">
+                  Edit the conditions available during the game.
+                </p>
+
+                <div id="conditionEditorList" class="theme-editor-list"></div>
+
+                <button id="addConditionBtn" class="top-gap">Add Condition</button>
+              </details>
+
+              <details>
+                <summary>Stage Background</summary>
+
+                <div class="theme-upload-card">
+                  <p class="muted small">
+                    Upload the full-screen background image behind the whole playing area.
+                  </p>
+
+                  <input id="stageBackgroundInput" type="file" accept="image/*" />
+
+                  <button id="clearStageBackgroundBtn" class="top-gap">
+                    Clear Stage Background
+                  </button>
+                </div>
+              </details>
+
+              <details>
+                <summary>Board Design</summary>
+
+                <div class="theme-upload-card">
+                  <p class="muted small">
+                    Upload the board design image that sits behind the 8×8 grid.
+                  </p>
+
+                  <input id="boardDesignInput" type="file" accept="image/*" />
+
+                  <button id="clearBoardDesignBtn" class="top-gap">
+                    Clear Board Design
+                  </button>
+                </div>
+              </details>
+
+              <details>
+                <summary>Ability Spreadsheet</summary>
+
+                <div class="theme-upload-card">
+                  <p class="muted small">
+                    Upload a CSV with character, ability, description, cost, and optional portrait.
+                  </p>
+
+                  <input id="abilityCsvInput" type="file" accept=".csv" />
+                  <p class="muted small">
+                    Upload character portrait images that match the CSV portrait filenames or character names.
+                  </p>
+
+                  <input id="portraitImageInput" type="file" accept="image/*" multiple />
+
+                  <div id="portraitUploadStatus" class="portrait-upload-status">
+                    No portrait images uploaded.
+                  </div>
+                </div>
+              </details>
+
+            </details>
+          </section>
+          <!--
+          <section class="panel-section">
+            <h2>Tile Descriptions</h2>
+            <div id="tileDescriptionList" class="description-list"></div>
+          </section>
+
+          <section class="panel-section">
+            <h2>Condition Descriptions</h2>
+            <div id="conditionDescriptionList" class="description-list"></div>
+          </section>
+        -->
+        </aside>
+
+        <main class="workspace">
+          <header class="topbar">
+            <div class="topbar-left">
+              <div class="game-title-small">RPG Chess</div>
+            </div>
+
+            <section class="topbar-save-load-panel">
+              <h2>Save / Load</h2>
+
+              <label for="presetNameInput">Setup Name</label>
+              <input id="presetNameInput" type="text" placeholder="e.g. Elemental Chess" />
+
+              <div class="button-row two-cols top-gap">
+                <button id="savePresetBtn" class="primary">Save World</button>
+                <button id="loadPresetBtn">Load World</button>
+              </div>
+
+              <div class="button-row two-cols top-gap">
+                <button id="deletePresetBtn">Delete World</button>
+                <button id="exportBtn">Export JSON</button>
+              </div>
+
+              <label for="presetSelect" class="top-gap">Saved Worlds</label>
+              <select id="presetSelect"></select>
+
+              <div id="saveStatusMessage" class="save-status-message"></div>
+
+              <label for="jsonBox" class="top-gap">Board JSON Backup</label>
+              <textarea id="jsonBox" placeholder="Optional backup/export data will appear here..."></textarea>
+
+              <div class="button-row two-cols top-gap">
+                <button id="importBtn">Import JSON</button>
+              </div>
+            </section>
+
+            <div class="status-box topbar-status">
+              <div><strong>Mode:</strong> <span id="modeReadout">Paint Tile</span></div>
+              <div><strong>Selected Piece:</strong> <span id="pieceReadout">King</span></div>
+              <div><strong>Selected Team:</strong> <span id="teamReadout">White</span></div>
+              <div><strong>Picked Up:</strong> <span id="movingReadout">None</span></div>
+              <div><strong>Turn:</strong> <span id="turnReadout">White</span></div>
+            </div>
+          </header>
+
+          <section class="board-area">
+            <div class="play-area">
+
+              <div class="board-column">
+                <div class="board-stack">
+
+                  <div class="board-shell">
+                    <img id="boardDesignImage" class="board-design-image" alt="" />
+                    <div id="board" class="board"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="team-side">
+
+                <button id="standardSetupBtn" class="primary standard-setup-right">
+                  Standard Setup
+                </button>
+
+                <div class="board-action-row">
+                  <button id="undoBtn" class="undo-board-btn" title="Undo the last board action. Shortcut: Ctrl+Z">
+                    <span class="undo-icon">↶</span>
+                    <span class="undo-label">Undo</span>
+                    <span class="undo-shortcut">Ctrl+Z</span>
+                  </button>
+
+                  <button id="clearBoardBtn" class="clear-board-btn standard-setup-right"
+                    title="Clear all pieces, terrain, counters, and conditions from the board">
+                    Clear Board
+                  </button>
+                </div>
+
+                <section class="team-strip compact-team-strip">
+                  <h3 class="team-strip-title">Black Team</h3>
+                  <div id="blackTray" class="team-tray compact-team-row"></div>
+                </section>
+
+                <section class="team-strip compact-team-strip">
+                  <h3 class="team-strip-title">White Team</h3>
+                  <div id="whiteTray" class="team-tray compact-team-row"></div>
+                </section>
+
+                <section class="ability-description-box character-card-box">
+                  <h3 class="team-strip-title">Character Card</h3>
+                  <div id="abilityDescriptionContent" class="ability-description-content">
+                    Click a portrait to edit/view a character.
+                  </div>
+                </section>
+
+                <section class="clock-box">
+                  <h3 class="team-strip-title">Clock</h3>
+
+                  <div class="clock-line"><strong>Black:</strong> <span id="blackTimerReadout">Off</span></div>
+                  <div class="clock-line"><strong>White:</strong> <span id="whiteTimerReadout">Off</span></div>
+
+                  <label for="timerSelect">Time per player</label>
+                  <select id="timerSelect">
+                    <option value="0">Off</option>
+                    <option value="30">30 sec</option>
+                    <option value="60">60 sec</option>
+                    <option value="120">120 sec</option>
+                    <option value="300">5 min</option>
+                  </select>
+
+                  <button id="passTurnBtn">Pass Turn</button>
+                </section>
+
+              </div>
+
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
