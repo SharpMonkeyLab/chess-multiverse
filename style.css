@@ -304,11 +304,13 @@ h3,
   display: none;
 }
 
+/*
 #exportBtn,
 #importBtn,
 #jsonBox {
   display: none !important;
 }
+*/
 
 .save-status-message {
   min-height: 18px;
